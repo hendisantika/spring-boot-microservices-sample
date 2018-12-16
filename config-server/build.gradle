@@ -46,7 +46,6 @@ dependencyManagement {
 }
 
 
-
 dependencies {
     compile("org.springframework.cloud:spring-cloud-config-server")
     implementation('org.springframework.boot:spring-boot-starter')
@@ -55,7 +54,7 @@ dependencies {
 
 jar {
     baseName = "${project.jarName}"
-    version =  "${project.versionName}"
+    version = "${project.versionName}"
 }
 
 /*
@@ -84,5 +83,5 @@ task buildDocker(type: Docker, dependsOn: build) {
 }
 
 run {
-    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=4100,suspend=n','-Dspring.profiles.active=default']
+    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=4100,suspend=n', '-Dspring.profiles.active=default']
 }
