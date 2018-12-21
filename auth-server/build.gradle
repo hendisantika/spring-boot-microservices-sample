@@ -1,8 +1,9 @@
 buildscript {
-    ext {
+    project.ext {
         springBootVersion = '2.1.1.RELEASE'
         jarName = 'basic-auth-server'
         gradleDockerVersion = '1.2'
+        versionName = '0.0.1'
     }
     repositories {
         jcenter()
@@ -24,7 +25,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'docker'
 
-group = 'com.hendisantika.microservices'
+group = 'com.hendisantika.microservices.authserver'
 mainClassName = 'com.hendisantika.microservices.authserver.AuthServerApplication'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
