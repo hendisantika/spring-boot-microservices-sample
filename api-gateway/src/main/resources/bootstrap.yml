@@ -4,6 +4,21 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    mappings:
+      enabled: true
+    routes:
+      enabled: true
+zuul:
+  routes:
+    invoicing:
+      path: /invoicing/**
+      url: [url that I know works]/invoicing
 
 ---
 
