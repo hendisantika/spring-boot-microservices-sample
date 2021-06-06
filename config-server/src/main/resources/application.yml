@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: config-server
   cloud:
     config:
       server:
@@ -6,7 +8,6 @@ spring:
           uri: https://github.com/hendisantika/spring-boot-microservices
           # While in development mode, you can configure the config server to pick up configuration files from
           # the file system
-
 #           uri: file://Users/hendisantika/Documents/Spring-Cloud/Trainings/Code Samples/Enterprise Java/Micro Services/sample-config
 
 # Defines the port where the config server is running so that rest of the services can pick up
