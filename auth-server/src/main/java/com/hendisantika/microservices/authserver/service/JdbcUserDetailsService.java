@@ -1,8 +1,12 @@
 package com.hendisantika.microservices.authserver.service;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +21,7 @@ import java.util.LinkedList;
 @Configuration
 public class JdbcUserDetailsService implements UserDetailsService {
 
-    private List<UserDetailsService> uds = new LinkedList<>();
+    private final List<UserDetailsService> uds = new LinkedList<>();
 
     public JdbcUserDetailsService() {
         // Default constructor
