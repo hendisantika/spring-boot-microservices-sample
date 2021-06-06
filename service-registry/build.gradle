@@ -1,42 +1,26 @@
-buildscript {
-    project.ext {
-        springBootVersion = '2.1.1.RELEASE'
-        jarName = 'service-registry'
-        gradleDockerVersion = '1.2'
-        versionName = '0.0.1'
-    }
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "se.transmode.gradle:gradle-docker:${project.gradleDockerVersion}"
-    }
+plugins {
+    id 'org.springframework.boot' version '2.2.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
-task createWrapper(type: Wrapper) {
-    gradleVersion = '4.10'
-}
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'application'
-apply plugin: 'docker'
-
-group = 'com.hendisantika.microservices'
-mainClassName = 'com.hendisantika.microservices.serviceregistry.ServiceRegistryApplication'
+group = 'com.hendisantika'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
 }
 
 ext {
-    springCloudVersion = 'Finchley.SR2'
+    set('springCloudVersion', "2020.0.3")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 dependencyManagement {
@@ -45,46 +29,6 @@ dependencyManagement {
     }
 }
 
-
-dependencies {
-    implementation('org.springframework.boot:spring-boot-starter')
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '2.0.2.RELEASE'
-    compile('org.springframework.cloud:spring-cloud-starter-config')
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-}
-
-jar {
-    baseName = "${project.jarName}"
-    version = "${project.versionName}"
-}
-
-
-/*
-* This task builds the docker image by copying the output of the "jar" gradle command
-* and moving it to the "build/docker" directory which is used as the staging directory
-* by the docker gradle plugin. We then build the docker image by invoking the appropriate
-* Dockerfile.
-*/
-task buildDocker(type: Docker, dependsOn: build) {
-    push = false
-    applicationName = jar.baseName
-    tagVersion = jar.version
-    dockerfile = file('src/main/docker/Dockerfile')
-    doFirst {
-        // Copy the built fat jar to the Docker plugin staging directory
-        copy {
-            from jar
-            into stageDir
-        }
-        // Copy the run.sh file to the Docker plugin staging directory
-        copy {
-            from "${project.buildDir}/resources/main/run.sh"
-            into stageDir
-        }
-    }
-}
-
-run {
-    jvmArgs = ['-Xdebug', '-Xrunjdwp:server=y,transport=dt_socket,address=4100,suspend=n', '-Dspring.profiles.active=default']
+test {
+    useJUnitPlatform()
 }
